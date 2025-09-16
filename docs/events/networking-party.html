@@ -18,6 +18,192 @@
             align-items: center;
         }
 
+        .event-detail-content {
+            padding: 4rem 0;
+        }
+
+        .event-info-card {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .event-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .meta-icon {
+            font-size: 1.5rem;
+        }
+
+        .meta-content h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .meta-content p {
+            color: var(--text-white);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .content-section {
+            margin-bottom: 3rem;
+        }
+
+        .content-section h3 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-left: 2px solid rgba(59, 130, 246, 0.3);
+            padding-left: 2rem;
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 1.5rem;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+        }
+
+        .timeline-time {
+            color: var(--primary-blue);
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .timeline-content h4 {
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-gray);
+        }
+
+        .instructor-card {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: rgba(59, 130, 246, 0.03);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-white);
+            flex-shrink: 0;
+        }
+
+        .instructor-info h4 {
+            color: var(--text-white);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor-title {
+            color: var(--primary-blue);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-bio {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .sticky-apply {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+
+        .apply-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .apply-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .apply-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .apply-deadline {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .apply-button {
+            padding: 1rem 2rem;
+            background: var(--gradient-blue);
+            color: var(--text-white);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .apply-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        /* 네트워킹 페이지 고유 스타일 */
         .party-highlight {
             background: rgba(59, 130, 246, 0.1);
             border-left: 4px solid var(--primary-blue);
@@ -137,6 +323,30 @@
             font-weight: 600;
             margin: 0.5rem;
         }
+
+        @media (max-width: 768px) {
+            .apply-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .apply-info {
+                gap: 1rem;
+            }
+
+            .instructor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .review-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
     </style>
 </head>
 <body>
@@ -180,7 +390,7 @@
                         <span class="meta-icon">📅</span>
                         <div class="meta-content">
                             <h4>일시</h4>
-                            <p>2024. 11. 16 (토) 18:00 ~ 21:00</p>
+                            <p>2025. 10. 05 (일) 18:00 ~ 21:00</p>
                         </div>
                     </div>
                     <div class="meta-item">

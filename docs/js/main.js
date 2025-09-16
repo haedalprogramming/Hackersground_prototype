@@ -55,12 +55,10 @@ function initCalendar() {
 
     // Sample events data (더미 데이터)
     const events = {
-        '2024-10-25': [{ title: 'Docker 워크샵', type: 'handson' }],
-        '2024-11-02': [{ title: '성장 스토리 세미나', type: 'seminar' }],
-        '2024-11-16': [{ title: '코드 리뷰 파티', type: 'networking' }],
-        '2024-11-30': [{ title: 'ChatGPT 워크샵', type: 'handson' }],
-        '2024-12-07': [{ title: '해커톤', type: 'hackathon' }],
-        '2024-12-21': [{ title: '송년회', type: 'networking' }]
+        '2025-09-14': [{ title: 'Docker 워크샵', type: 'handson', label: '핸즈온' }],
+        '2025-09-21': [{ title: '성장 스토리 세미나', type: 'seminar', label: '세미나' }],
+        '2025-10-05': [{ title: '코드 리뷰 파티', type: 'networking', label: '네트워킹' }],
+        '2025-10-19': [{ title: 'ChatGPT 워크샵', type: 'handson', label: '핸즈온' }]
     };
 
     function renderCalendar() {
@@ -94,12 +92,30 @@ function initCalendar() {
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
-            dayElement.textContent = day;
+
+            // Create day number element
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'calendar-day-number';
+            dayNumber.textContent = day;
+            dayElement.appendChild(dayNumber);
 
             // Check if this day has events
             const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             if (events[dateString]) {
                 dayElement.classList.add('has-event');
+
+                // Add event labels
+                const eventContainer = document.createElement('div');
+                eventContainer.className = 'calendar-event-container';
+
+                events[dateString].forEach(event => {
+                    const eventLabel = document.createElement('div');
+                    eventLabel.className = `calendar-event-label event-${event.type}`;
+                    eventLabel.textContent = event.label;
+                    eventContainer.appendChild(eventLabel);
+                });
+
+                dayElement.appendChild(eventContainer);
 
                 // Add click event to show event details
                 dayElement.addEventListener('click', function() {

@@ -281,7 +281,7 @@ body {
 }
 
 .calendar-container {
-    max-width: 600px;
+    max-width: 900px;
     margin: 0 auto;
     background: rgba(0, 255, 65, 0.05);
     border-radius: 20px;
@@ -343,11 +343,16 @@ body {
 
 .calendar-day {
     background: var(--dark-bg);
-    padding: 1rem 0.5rem;
+    padding: 1.2rem 0.8rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .calendar-day:hover {
@@ -355,21 +360,52 @@ body {
 }
 
 .calendar-day.has-event {
-    background: rgba(0, 255, 65, 0.1);
-    color: var(--primary-green);
-    font-weight: 600;
+    background: rgba(0, 255, 65, 0.05);
 }
 
-.calendar-day.has-event::after {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background: var(--primary-green);
-    border-radius: 50%;
+.calendar-day-number {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 0.5rem;
+}
+
+.calendar-day.has-event .calendar-day-number {
+    color: var(--primary-green);
+}
+
+.calendar-event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    align-items: center;
+}
+
+.calendar-event-label {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    width: fit-content;
+    min-width: 45px;
+    line-height: 1.2;
+}
+
+.event-handson {
+    background: rgba(0, 255, 65, 0.9);
+    color: var(--dark-bg);
+}
+
+.event-seminar {
+    background: rgba(107, 70, 193, 0.9);
+    color: var(--text-white);
+}
+
+.event-networking {
+    background: rgba(59, 130, 246, 0.9);
+    color: var(--text-white);
 }
 
 /* Events Section */
@@ -669,9 +705,23 @@ body {
         padding: 1rem;
     }
 
-    .calendar-day-header,
-    .calendar-day {
+    .calendar-day-header {
         padding: 0.5rem;
         font-size: 0.8rem;
+    }
+
+    .calendar-day {
+        padding: 0.8rem 0.4rem;
+        min-height: 80px;
+    }
+
+    .calendar-day-number {
+        font-size: 1rem;
+    }
+
+    .calendar-event-label {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+        min-width: 35px;
     }
 }

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker로 나만의 개발 환경 구축하기 - 해커그라운드</title>
+    <meta name="description" content="Docker의 개념을 이해하고, 나만의 개발 서버를 직접 구축하여 반복적인 설치 작업을 없애는 방법을 배웁니다.">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        .event-detail-hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 0, 0, 0.9));
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .event-detail-content {
+            padding: 4rem 0;
+        }
+
+        .event-info-card {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid var(--border-green);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .event-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .meta-icon {
+            font-size: 1.5rem;
+        }
+
+        .meta-content h4 {
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .meta-content p {
+            color: var(--text-white);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .content-section {
+            margin-bottom: 3rem;
+        }
+
+        .content-section h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-left: 2px solid var(--border-green);
+            padding-left: 2rem;
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 1.5rem;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-green);
+            border-radius: 50%;
+        }
+
+        .timeline-time {
+            color: var(--primary-green);
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .timeline-content h4 {
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-gray);
+        }
+
+        .instructor-card {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: rgba(0, 255, 65, 0.03);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-green);
+        }
+
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--dark-bg);
+            flex-shrink: 0;
+        }
+
+        .instructor-info h4 {
+            color: var(--text-white);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor-title {
+            color: var(--primary-green);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-bio {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .sticky-apply {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-green);
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+
+        .apply-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .apply-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .apply-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .apply-deadline {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .apply-button {
+            padding: 1rem 2rem;
+            background: var(--gradient-primary);
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .apply-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow-green);
+        }
+
+        @media (max-width: 768px) {
+            .apply-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .apply-info {
+                gap: 1rem;
+            }
+
+            .instructor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="../images/1920x480-1.png" alt="해커그라운드 로고" class="logo-image">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../index.html#events" class="nav-link">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../index.html#about" class="nav-link">About</a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Event Detail Hero -->
+    <section class="event-detail-hero">
+        <div class="container">
+            <div class="event-category handson">핸즈온 실습</div>
+            <h1 class="hero-title" style="text-align: left; margin-bottom: 2rem;">
+                <span class="title-main" style="font-size: 2.5rem;">Docker로 나만의</span>
+                <span class="title-brand" style="font-size: 3rem;">개발 환경 구축하기</span>
+            </h1>
+
+            <div class="event-info-card">
+                <div class="event-meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <div class="meta-content">
+                            <h4>일시</h4>
+                            <p>2024. 10. 25 (금) 19:00 ~ 22:00</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📍</span>
+                        <div class="meta-content">
+                            <h4>장소</h4>
+                            <p>해커그라운드 (중앙로)</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <div class="meta-content">
+                            <h4>모집인원</h4>
+                            <p>20명</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">💰</span>
+                        <div class="meta-content">
+                            <h4>참가비</h4>
+                            <p>₩30,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Detail Content -->
+    <section class="event-detail-content">
+        <div class="container">
+            <!-- 이런 걸 배워요 -->
+            <div class="content-section">
+                <h3>🎯 이런 걸 배워요</h3>
+                <p style="color: var(--text-gray); line-height: 1.8; font-size: 1.1rem;">
+                    매번 새로운 환경에서 개발할 때마다 반복되는 설정 작업에 지치셨나요?
+                    "제 컴퓨터에서는 되는데..."라는 말을 더 이상 하고 싶지 않으신가요?
+                </p>
+                <br>
+                <p style="color: var(--text-gray); line-height: 1.8; font-size: 1.1rem;">
+                    이번 워크샵에서는 <strong style="color: var(--primary-green);">Docker</strong>를 활용해
+                    어떤 환경에서든 동일하게 작동하는 개발 환경을 구축하는 방법을 배웁니다.
+                    컨테이너의 기본 개념부터 실제 프로젝트에 적용하는 방법까지,
+                    실습을 통해 직접 체험해보세요.
+                </p>
+            </div>
+
+            <!-- 이런 분들께 추천해요 -->
+            <div class="content-section">
+                <h3>✋ 이런 분들께 추천해요</h3>
+                <ul style="color: var(--text-gray); line-height: 1.8;">
+                    <li style="margin-bottom: 1rem;">🔧 <strong>매번 프로젝트 세팅이 힘든 분</strong> - 새 컴퓨터나 팀원과 협업할 때마다 환경 설정으로 시간을 낭비하고 계신가요?</li>
+                    <li style="margin-bottom: 1rem;">😵 <strong>"제 컴퓨터에선 됐는데..."를 경험해본 분</strong> - 로컬에서는 잘 되던 코드가 배포하면 안 되는 경험이 있으신가요?</li>
+                    <li style="margin-bottom: 1rem;">🚀 <strong>배포 환경에 대한 이해를 높이고 싶은 대학생 및 주니어 개발자</strong> - 개발과 운영 환경의 차이를 줄이고 싶으신가요?</li>
+                    <li style="margin-bottom: 1rem;">🐳 <strong>Docker를 들어봤지만 써본 적 없는 분</strong> - 이론은 알지만 실제로 써본 적이 없어서 막막하신가요?</li>
+                </ul>
+            </div>
+
+            <!-- 진행 순서 -->
+            <div class="content-section">
+                <h3>⏰ 진행 순서</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">19:00 ~ 19:20</div>
+                        <div class="timeline-content">
+                            <h4>아이스브레이킹 & Docker 소개</h4>
+                            <p>간단한 자기소개와 함께 Docker가 왜 필요한지, 어떤 문제를 해결하는지 알아봅니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">19:20 ~ 19:50</div>
+                        <div class="timeline-content">
+                            <h4>Docker 기본 개념 & 설치</h4>
+                            <p>컨테이너, 이미지, Docker Hub 등 핵심 개념을 이해하고 각자의 컴퓨터에 Docker를 설치합니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">19:50 ~ 21:00</div>
+                        <div class="timeline-content">
+                            <h4>Dockerfile 작성 & 컨테이너 구축 실습</h4>
+                            <p>Node.js 프로젝트를 예시로 Dockerfile을 직접 작성하고 나만의 컨테이너를 만들어봅니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">21:00 ~ 21:10</div>
+                        <div class="timeline-content">
+                            <h4>휴식 시간</h4>
+                            <p>간단한 다과와 함께 잠깐의 휴식 시간을 갖습니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">21:10 ~ 21:50</div>
+                        <div class="timeline-content">
+                            <h4>Docker Compose로 멀티 컨테이너 관리</h4>
+                            <p>데이터베이스와 웹서버를 함께 사용하는 실제 프로젝트 환경을 Docker Compose로 구축해봅니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">21:50 ~ 22:00</div>
+                        <div class="timeline-content">
+                            <h4>Q&A & 네트워킹</h4>
+                            <p>궁금한 점을 자유롭게 질문하고, 참가자들과 네트워킹 시간을 갖습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 연사 소개 -->
+            <div class="content-section">
+                <h3>👨‍💻 연사 소개</h3>
+                <div class="instructor-card">
+                    <div class="instructor-avatar">🐳</div>
+                    <div class="instructor-info">
+                        <h4>김도커 멘토</h4>
+                        <div class="instructor-title">Backend Developer @ 스타트업 XYZ</div>
+                        <div class="instructor-bio">
+                            5년차 백엔드 개발자로 현재 여러 마이크로서비스를 Docker와 Kubernetes로 운영하고 있습니다.
+                            "복잡한 인프라를 단순하게"를 모토로 개발팀의 생산성을 높이는 일에 관심이 많습니다.
+                            주니어 시절 배포 환경 때문에 고생했던 경험을 바탕으로,
+                            여러분이 같은 실수를 반복하지 않도록 실용적인 Docker 사용법을 알려드리겠습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 준비물 & 주의사항 -->
+            <div class="content-section">
+                <h3>🎒 준비물 & 주의사항</h3>
+                <div style="background: rgba(107, 70, 193, 0.1); padding: 2rem; border-radius: 15px; border: 1px solid rgba(107, 70, 193, 0.3);">
+                    <h4 style="color: var(--primary-purple); margin-bottom: 1rem;">준비물</h4>
+                    <ul style="color: var(--text-gray); line-height: 1.8; margin-bottom: 2rem;">
+                        <li>💻 개인 노트북 (Windows, Mac, Linux 모두 가능)</li>
+                        <li>🌐 인터넷 연결</li>
+                        <li>📝 메모할 수 있는 도구 (노트북 or 종이)</li>
+                        <li>☕ 집중력을 위한 간단한 음료수 (선택사항)</li>
+                    </ul>
+
+                    <h4 style="color: var(--primary-purple); margin-bottom: 1rem;">주의사항</h4>
+                    <ul style="color: var(--text-gray); line-height: 1.8;">
+                        <li>⚡ 노트북을 완전히 충전해서 오시거나 충전기를 꼭 가져오세요</li>
+                        <li>🔧 Docker 설치는 현장에서 함께 진행하니 미리 설치하지 않으셔도 됩니다</li>
+                        <li>❓ 궁금한 점이 있으면 언제든 손을 들고 질문해주세요</li>
+                        <li>🤝 실습 중 어려움이 있으면 옆 사람과 도움을 주고받으세요</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Apply Button -->
+    <div class="sticky-apply">
+        <div class="apply-content">
+            <div class="apply-info">
+                <div class="apply-price">₩30,000</div>
+                <div class="apply-deadline">마감까지 5일 남음</div>
+            </div>
+            <a href="#" class="apply-button" onclick="alert('🚧 준비중입니다! 실제 서비스에서는 결제 페이지로 이동합니다.'); return false;">지금 신청하기</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-bottom: 80px;">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../images/1920x480-1.png" alt="해커그라운드 로고" class="footer-logo-image">
+                </div>
+                <div class="footer-info">
+                    <h3>Contact</h3>
+                    <p>📧 contact@hackersground.kr</p>
+                    <div class="social-links">
+                        <a href="https://github.com/hackersground-kr" target="_blank" class="social-link">
+                            <span>📱 GitHub</span>
+                        </a>
+                        <a href="https://www.youtube.com/@hackersground-kr" target="_blank" class="social-link">
+                            <span>📺 YouTube</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
